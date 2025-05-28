@@ -1,11 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 export function useScrollSpy(elementIds: string[], offset = 0) {
   const [activeId, setActiveId] = useState<string>("");
+  const [node, setNode] = useState<HTMLDivElement | null>(null);
+  const nodeCallback = useCallback((node: HTMLDivElement) => {
+    setNode(node);
+  }, []);
 
   useEffect(() => {
+    if (!node) return;
     let visibleList: Array<string> = [];
     let innerActiveId: string;
     const observer = new IntersectionObserver(
@@ -28,10 +33,10 @@ export function useScrollSpy(elementIds: string[], offset = 0) {
         });
       },
       {
-        root: document.querySelector("#photo-feed"),
+        root: node,
         threshold: 0,
         rootMargin: "-20% 0px -30% 0px",
-      },
+      }
     );
 
     elementIds.forEach((id) => {
@@ -51,7 +56,7 @@ export function useScrollSpy(elementIds: string[], offset = 0) {
         }
       });
     };
-  }, [elementIds, offset]);
+  }, [elementIds, offset, node]);
 
-  return activeId;
+  return { activeId, nodeCallback };
 }

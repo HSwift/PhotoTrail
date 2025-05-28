@@ -14,12 +14,10 @@ interface PhotoGalleryProps {
 
 export function PhotoGallery({ photos }: PhotoGalleryProps) {
   const [selectedPhoto, setSelectedPhoto] = useState<PhotoData | null>(null);
-  const [mapError, setMapError] = useState(false);
-
   const photoIds = useMemo(() => photos.map((photo) => `photo-${photo.id}`), [
     photos,
   ]);
-  const activePhotoId = useScrollSpy(photoIds, 100);
+  const {activeId: activePhotoId, nodeCallback} = useScrollSpy(photoIds, 100);
   const isMobile = useIsMobile();
 
   const currentPhotoIndex = useMemo(() => {
@@ -58,7 +56,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
           </div>
 
           {/* Photo Feed - Bottom on Mobile */}
-          <div id="photo-feed" className="flex-1 p-4 overflow-y-scroll">
+          <div ref={nodeCallback} id="photo-feed" className="flex-1 p-4 overflow-y-scroll">
             <div>
               <div className="mb-6">
                 <h1 className="text-3xl font-bold mb-2">Photo Journey</h1>
@@ -99,7 +97,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
       {/* Desktop Layout: Side by Side */}
       <div className="flex h-screen">
         {/* Photo Feed - Left on Desktop */}
-        <div id="photo-feed" className="flex-1 overflow-y-auto">
+        <div ref={nodeCallback} id="photo-feed" className="flex-1 overflow-y-auto">
           <div className="p-6 lg:mx-16">
             <div className="mb-8">
               <h1 className="text-4xl font-bold mb-2">Photo Journey</h1>
