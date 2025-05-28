@@ -67,10 +67,8 @@ export function PhotoMap({ photos, currentPhotoIndex }: PhotoMapProps) {
 
       marker.getElement().addEventListener("click", () => {
         const photoElement = document.getElementById("photo-" + photo.id)!;
-        const photoFeed = document.getElementById("photo-feed")!;
-        const unit = photoFeed.clientHeight / 100;
-        photoFeed.scrollTo({
-          top: photoElement.offsetTop - Math.round(unit * 20),
+        photoElement.scrollIntoView({
+          block: 'center',
           behavior: "smooth",
         });
       });
