@@ -28,7 +28,7 @@ export function PhotoViewer({ photo, onClose }: PhotoViewerProps) {
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.8, opacity: 0 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          className="relative max-w-3/5 max-h-full bg-white rounded-lg overflow-hidden"
+          className="relative max-w-full max-h-full bg-white rounded-lg overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           <Button
@@ -45,7 +45,7 @@ export function PhotoViewer({ photo, onClose }: PhotoViewerProps) {
               <img
                 src={photo.fullSize || "/placeholder.svg"}
                 alt={photo.title}
-                className="w-full h-auto max-h-[80vh] object-contain"
+                className="w-full h-auto max-h-[95vh] object-contain"
               />
             </div>
 
