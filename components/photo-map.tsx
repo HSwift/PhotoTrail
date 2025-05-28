@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { PhotoData } from "@/lib/photo-data";
 import { useIsMobile } from "@/hooks/use-mobile";
+import mapboxgl  from 'mapbox-gl'
 
 interface PhotoMapProps {
   photos: PhotoData[];
@@ -14,23 +15,7 @@ export function PhotoMap({ photos, currentPhotoIndex }: PhotoMapProps) {
   const map = useRef<any>(null);
   const markers = useRef<any[]>([]);
   const [mapLoaded, setMapLoaded] = useState(false);
-  const [mapboxgl, setMapboxgl] = useState<any>(null);
   const isMobile = useIsMobile();
-
-  useEffect(() => {
-    // Dynamically import mapbox-gl
-    const loadMapbox = async () => {
-      try {
-        const mapboxModule = await import("mapbox-gl");
-        const mapboxgl = mapboxModule.default || mapboxModule;
-        setMapboxgl(mapboxgl);
-      } catch (error) {
-        console.error("Failed to load Mapbox GL:", error);
-      }
-    };
-
-    loadMapbox();
-  }, []);
 
   useEffect(() => {
     if (!mapContainer.current || !mapboxgl) return;
