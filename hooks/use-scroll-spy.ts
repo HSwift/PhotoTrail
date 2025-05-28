@@ -17,17 +17,17 @@ export function useScrollSpy(elementIds: string[]) {
           } else {
             delete visibleIdMap[entry.target.id];
           }
-
-          let ids = Object.keys(visibleIdMap);
-          ids.sort((left, right) => visibleIdMap[right] - visibleIdMap[left]);
-          if (ids.length > 0) {
-            setActiveId(ids[0]);
-          }
         });
+
+        let ids = Object.keys(visibleIdMap);
+        ids.sort((left, right) => visibleIdMap[right] - visibleIdMap[left]);
+        if (ids.length > 0) {
+          setActiveId(ids[0]);
+        }
       },
       {
         root: document.querySelector("#photo-feed"),
-        threshold: 0,
+        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99],
         rootMargin: "-20% 0px -30% 0px",
       },
     );

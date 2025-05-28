@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useMemo, useState} from "react";
+import { useMemo, useState } from "react";
 import { PhotoCard } from "./photo-card";
 import { PhotoViewer } from "./photo-viewer";
 import { PhotoMap } from "./photo-map";
