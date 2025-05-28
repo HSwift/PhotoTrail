@@ -23,15 +23,15 @@ export function PhotoCard({ photo, onClick, isInView }: PhotoCardProps) {
       className="w-full"
     >
       <Card
-        className={`overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg ${
+        className={`overflow-hidden transition-all duration-300 hover:shadow-lg ${
           isInView ? "ring-2 ring-blue-500" : ""
         }`}
       >
-        <div className="relative group w-full" onClick={onClick}>
+        <div className="relative group w-full cursor-zoom-in" onClick={onClick}>
           <img
             src={photo.thumbnail || "/placeholder.svg"}
             alt={photo.title}
-            className="w-full h-auto object-cover "
+            className="w-full h-auto object-cover"
             style={{ display: "block" }}
             width={imageDefaultWidth}
             height={Math.round(imageDefaultWidth / photo.aspectRatio)}
