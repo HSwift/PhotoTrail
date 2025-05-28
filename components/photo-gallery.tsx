@@ -17,7 +17,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
   const photoIds = useMemo(() => photos.map((photo) => `photo-${photo.id}`), [
     photos,
   ]);
-  const {activeId: activePhotoId, nodeCallback} = useScrollSpy(photoIds, 100);
+  const {activeId: activePhotoId, nodeCallback} = useScrollSpy(photoIds);
   const isMobile = useIsMobile();
 
   const currentPhotoIndex = useMemo(() => {

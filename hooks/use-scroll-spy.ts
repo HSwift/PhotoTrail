@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 
-export function useScrollSpy(elementIds: string[], offset = 0) {
+export function useScrollSpy(elementIds: string[]) {
   const [activeId, setActiveId] = useState<string>("");
   const [node, setNode] = useState<HTMLDivElement | null>(null);
   const nodeCallback = useCallback((node: HTMLDivElement) => {
@@ -11,30 +11,28 @@ export function useScrollSpy(elementIds: string[], offset = 0) {
 
   useEffect(() => {
     if (!node) return;
-    let visibleList: Array<string> = [];
-    let innerActiveId: string;
+    let visibleIdMap: {[key: string]: number} = {};
+
     const observer = new IntersectionObserver(
       (entries) => {
         console.log(entries);
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            visibleList.push(entry.target.id);
-            innerActiveId = entry.target.id;
-            setActiveId(entry.target.id);
-            console.log("add", entry.target.id, visibleList);
+            visibleIdMap[entry.target.id] = entry.intersectionRatio;
           } else {
-            visibleList = visibleList.filter((x) => x !== entry.target.id);
-            if (innerActiveId == entry.target.id) {
-              setActiveId(visibleList[0]);
-              innerActiveId = visibleList[visibleList.length - 1];
-            }
-            console.log("remove", entry.target.id, visibleList);
+            delete visibleIdMap[entry.target.id];
           }
         });
+
+        let ids = Object.keys(visibleIdMap);
+        ids.sort((left, right) => visibleIdMap[right] - visibleIdMap[left]);
+        if (ids.length > 0) {
+          setActiveId(ids[0]);
+        }
       },
       {
         root: node,
-        threshold: 0,
+        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99],
         rootMargin: "-20% 0px -30% 0px",
       }
     );
@@ -56,7 +54,7 @@ export function useScrollSpy(elementIds: string[], offset = 0) {
         }
       });
     };
-  }, [elementIds, offset, node]);
+  }, [elementIds, node]);
 
   return { activeId, nodeCallback };
 }
