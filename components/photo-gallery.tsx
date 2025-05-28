@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import {useEffect, useMemo, useState} from "react";
 import { PhotoCard } from "./photo-card";
 import { PhotoViewer } from "./photo-viewer";
 import { PhotoMap } from "./photo-map";
@@ -19,7 +19,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
   const photoIds = useMemo(() => photos.map((photo) => `photo-${photo.id}`), [
     photos,
   ]);
-  const activePhotoId = useScrollSpy(photoIds, 100);
+  const activePhotoId = useScrollSpy(photoIds);
   const isMobile = useIsMobile();
 
   const currentPhotoIndex = useMemo(() => {
