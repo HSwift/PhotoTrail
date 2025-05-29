@@ -61,7 +61,7 @@ export function PhotoCard({ photo, onClick, isInView }: PhotoCardProps) {
               <div className="flex items-center gap-2">
                 <Aperture className="w-3 h-3" />
                 <span>
-                  {photo.metadata.aperture} • {photo.metadata.shutterSpeed}{" "}
+                  {photo.metadata.focal} • {photo.metadata.aperture} • {photo.metadata.shutterSpeed}{" "}
                   • ISO {photo.metadata.iso}
                 </span>
               </div>

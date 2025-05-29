@@ -76,19 +76,23 @@ export function PhotoViewer({ photo, onClose }: PhotoViewerProps) {
                 <h4 className="font-semibold mb-2">Camera Settings</h4>
                 <div className="grid grid-cols-1 gap-2 text-sm font-mono">
                   <div>
-                    <span className="text-muted-foreground">Lens:</span>
+                    <span className="text-muted-foreground">Lens: </span>
                     {photo.metadata.lens}
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Aperture:</span>
+                    <span className="text-muted-foreground">Focal: </span>
+                    {photo.metadata.focal}
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Aperture: </span>
                     {photo.metadata.aperture}
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Shutter:</span>
+                    <span className="text-muted-foreground">Shutter: </span>
                     {photo.metadata.shutterSpeed}
                   </div>
                   <div>
-                    <span className="text-muted-foreground">ISO:</span>
+                    <span className="text-muted-foreground">ISO: </span>
                     {photo.metadata.iso}
                   </div>
                 </div>

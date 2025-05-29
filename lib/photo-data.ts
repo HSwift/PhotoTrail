@@ -13,7 +13,7 @@ export interface PhotoData {
   metadata: {
     camera: string;
     lens: string;
-    settings: string;
+    focal: string;
     iso: number;
     aperture: string;
     shutterSpeed: string;
@@ -38,7 +38,7 @@ export const photoData: PhotoData[] = [
     metadata: {
       camera: "Canon EOS R5",
       lens: "24-70mm f/2.8",
-      settings: "24mm, f/8, 1/125s",
+      focal: "24mm",
       iso: 100,
       aperture: "f/8",
       shutterSpeed: "1/125s",
@@ -61,7 +61,7 @@ export const photoData: PhotoData[] = [
     metadata: {
       camera: "Sony A7R IV",
       lens: "85mm f/1.4",
-      settings: "85mm, f/2.8, 1/250s",
+      focal: "85mm",
       iso: 200,
       aperture: "f/2.8",
       shutterSpeed: "1/250s",
@@ -84,7 +84,7 @@ export const photoData: PhotoData[] = [
     metadata: {
       camera: "Nikon D850",
       lens: "14-24mm f/2.8",
-      settings: "16mm, f/11, 1/30s",
+      focal: "16mm",
       iso: 64,
       aperture: "f/11",
       shutterSpeed: "1/30s",
@@ -107,7 +107,7 @@ export const photoData: PhotoData[] = [
     metadata: {
       camera: "Fujifilm X-T4",
       lens: "35mm f/1.4",
-      settings: "35mm, f/1.8, 1/60s",
+      focal: "35mm",
       iso: 800,
       aperture: "f/1.8",
       shutterSpeed: "1/60s",
@@ -131,7 +131,7 @@ export const photoData: PhotoData[] = [
     metadata: {
       camera: "Canon EOS R6",
       lens: "16-35mm f/2.8",
-      settings: "20mm, f/8, 1/125s",
+      focal: "20mm",
       iso: 100,
       aperture: "f/8",
       shutterSpeed: "1/125s",
@@ -154,7 +154,7 @@ export const photoData: PhotoData[] = [
     metadata: {
       camera: "Sony A7R V",
       lens: "70-200mm f/2.8",
-      settings: "135mm, f/8, 1/250s",
+      focal: "135mm",
       iso: 200,
       aperture: "f/8",
       shutterSpeed: "1/250s",
