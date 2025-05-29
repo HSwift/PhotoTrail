@@ -15,7 +15,6 @@ export function useScrollSpy(elementIds: string[]) {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        console.log(entries);
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             visibleIdMap[entry.target.id] = entry.intersectionRatio;
@@ -38,7 +37,6 @@ export function useScrollSpy(elementIds: string[]) {
     );
 
     elementIds.forEach((id) => {
-      console.log("enter");
       const element = document.getElementById(id);
       if (element) {
         observer.observe(element);
@@ -46,7 +44,6 @@ export function useScrollSpy(elementIds: string[]) {
     });
 
     return () => {
-      console.log("exit");
       elementIds.forEach((id) => {
         const element = document.getElementById(id);
         if (element) {

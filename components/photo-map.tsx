@@ -47,8 +47,6 @@ export function PhotoMap({ photos, currentPhotoIndex }: PhotoMapProps) {
     markers.current.forEach((marker) => marker.remove());
     markers.current = [];
 
-    console.log(currentPhotoIndex);
-
     // Add markers for all photos
     photos.forEach((photo, index) => {
       const el = document.createElement("div");
