@@ -28,7 +28,7 @@ export function PhotoViewer({ photo, onClose }: PhotoViewerProps) {
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.8, opacity: 0 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          className="flex relative max-w-full max-h-full bg-white rounded-lg overflow-hidden"
+          className="flex relative max-w-full max-h-full bg-white overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           <Button
