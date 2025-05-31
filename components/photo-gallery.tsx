@@ -17,7 +17,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
   const photoIds = useMemo(() => photos.map((photo) => `photo-${photo.id}`), [
     photos,
   ]);
-  const {activeId: activePhotoId, nodeCallback} = useScrollSpy(photoIds);
+  const { activeId: activePhotoId, nodeCallback } = useScrollSpy(photoIds);
   const isMobile = useIsMobile();
 
   const currentPhotoIndex = useMemo(() => {
@@ -48,7 +48,7 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
         {/* Mobile Layout: Vertical Stack */}
         <div className="h-screen flex flex-col">
           {/* Map Section - Top on Mobile */}
-          <div className="h-[30vh] z-10 shrink-0">
+          <div className="h-[20vh] z-10 shrink-0">
             <PhotoMap
               photos={photos}
               currentPhotoIndex={Math.max(0, currentPhotoIndex)}
@@ -56,10 +56,14 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
           </div>
 
           {/* Photo Feed - Bottom on Mobile */}
-          <div ref={nodeCallback} id="photo-feed" className="flex-1 p-4 overflow-y-scroll">
+          <div
+            ref={nodeCallback}
+            id="photo-feed"
+            className="flex-1 p-4 overflow-y-scroll"
+          >
             <div>
               <div className="mb-6">
-                <h1 className="text-3xl font-bold mb-2">Photo Journey</h1>
+                <h1 className="text-3xl font-normal mb-2">Photo Journey</h1>
                 <p className="text-muted-foreground text-sm">
                   A collection of moments captured around the world
                 </p>
@@ -97,10 +101,14 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
       {/* Desktop Layout: Side by Side */}
       <div className="flex h-screen">
         {/* Photo Feed - Left on Desktop */}
-        <div ref={nodeCallback} id="photo-feed" className="flex-1 overflow-y-auto">
+        <div
+          ref={nodeCallback}
+          id="photo-feed"
+          className="flex-1 overflow-y-auto"
+        >
           <div className="p-6 lg:mx-16">
             <div className="mb-8">
-              <h1 className="text-4xl font-bold mb-2">Photo Journey</h1>
+              <h1 className="text-4xl font-normal mb-2">Photo Journey</h1>
               <p className="text-muted-foreground">
                 A collection of moments captured around the world
               </p>

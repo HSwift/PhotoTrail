@@ -23,8 +23,8 @@ export function PhotoCard({ photo, onClick, isInView }: PhotoCardProps) {
       className="w-full"
     >
       <Card
-        className={`overflow-hidden transition-all duration-300 hover:shadow-lg ${
-          isInView ? "ring-2 ring-blue-500" : ""
+        className={`overflow-hidden  transition-all duration-300 p-2 lg:p-4 ${
+          isInView ? "shadow-md" : ""
         }`}
       >
         <div className="relative group w-full cursor-zoom-in" onClick={onClick}>
@@ -39,13 +39,13 @@ export function PhotoCard({ photo, onClick, isInView }: PhotoCardProps) {
           <div className="absolute inset-0 bg-black/0" />
         </div>
 
-        <CardContent className="p-3 lg:p-4">
+        <CardContent className="p-1 lg:p-2">
           <h3 className="font-semibold text-base lg:text-lg mb-2">
             {photo.title}
           </h3>
           <p className="text-muted-foreground text-sm mb-3">{photo.caption}</p>
-          <div>
-            <div className="space-y-2 text-sm text-muted-foreground font-mono">
+          <div className="grid grid-cols-1 lg:grid-cols-2 text-xs lg:text-sm text-muted-foreground font-mono leading-3 lg:leading-4 space-y-2">
+            <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <MapPin className="w-3 h-3" />
                 <span>{photo.location.name}</span>
@@ -54,6 +54,8 @@ export function PhotoCard({ photo, onClick, isInView }: PhotoCardProps) {
                 <Camera className="w-3 h-3" />
                 <span>{photo.metadata.camera}</span>
               </div>
+            </div>
+            <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <Calendar className="w-3 h-3" />
                 <span>{new Date(photo.dateTaken).toLocaleString("zh-cn")}</span>
@@ -68,7 +70,7 @@ export function PhotoCard({ photo, onClick, isInView }: PhotoCardProps) {
             </div>
           </div>
 
-          <div className="mt-3 pt-3 border-t text-xs text-muted-foreground">
+          <div className="mt-2 pt-2 border-t text-xs text-muted-foreground">
             <div className="flex flex-wrap gap-1">
               {photo.tags.slice(0, 3).map((tag) => (
                 <Badge key={tag} variant="secondary" className="text-xs">
