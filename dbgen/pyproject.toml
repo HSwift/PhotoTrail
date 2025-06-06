@@ -1,0 +1,14 @@
+[project]
+name = "dbgen"
+version = "0.1.0"
+description = "Generate photo database"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "exif>=1.6.1",
+    "pydantic>=2.11.5",
+    "reverse-geocoder>=1.5.1",
+]
+
+[tool.uv]
+index-url = "https://mirrors.bfsu.edu.cn/pypi/web/simple"
