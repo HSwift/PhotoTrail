@@ -126,6 +126,9 @@ def get_photo_descriptor(path: str) -> PhotoDescriptor:
 
 
 def open_database(db_file: str) -> typing.List[PhotoDescriptor]:
+    if not os.path.exists(db_file):
+        return []
+
     with open(db_file, "rb") as f:
         content = f.read()
     descriptors = json.loads(content)
@@ -198,10 +201,10 @@ def main():
             try:
                 exif_info = exif.Image(path)
                 if not exif_info.has_exif:
-                    logger.warning(f"{path} doesn't contains any exif information")
+                    LOGGER.warning(f"{path} doesn't contains any exif information")
                     continue
             except Exception as e:
-                logger.warning(f"when read {path} exif information, exception {e} found")
+                LOGGER.warning(f"when read {path} exif information, exception {e} found")
                 continue
 
             photo_descriptor.aspectRatio = get_aspect_ratio(path)
