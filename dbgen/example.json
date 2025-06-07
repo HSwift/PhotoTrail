@@ -5,6 +5,7 @@
         "caption": null,
         "thumbnail": null,
         "fullSize": null,
+        "aspectRatio": null,
         "location": {
             "lat": null,
             "lng": null,

@@ -8,6 +8,7 @@ import os
 import re
 import typing
 
+from PIL import Image
 import exif
 import pydantic
 import reverse_geocoder
@@ -76,6 +77,14 @@ def get_datetime(raw_value: typing.Optional[str]) -> typing.Optional[str]:
     return datetime_obj.strftime("%Y/%m/%d %H:%M:%S")
 
 
+def get_aspect_ratio(image_path: str) -> typing.Optional[float]:
+    try:
+        image = Image.open(image_path)
+        return round(image.width / image.height, 2)
+    except Exception:
+        return None
+
+
 class PhotoDescriptorLocation(pydantic.BaseModel):
     lat: typing.Optional[float]
     lng: typing.Optional[float]
@@ -97,6 +106,7 @@ class PhotoDescriptor(pydantic.BaseModel):
     caption: typing.Optional[str]
     thumbnail: typing.Optional[str]
     fullSize: typing.Optional[str]
+    aspectRatio: typing.Optional[float]
     location: PhotoDescriptorLocation
     metadata: PhotoDescriptorMetadata
     tags: typing.List[str]
@@ -107,7 +117,7 @@ def get_photo_descriptor(path: str) -> PhotoDescriptor:
     with open(path, "rb") as f:
         photo_id = hashlib.sha1(f.read()).hexdigest()
 
-    descriptor = PhotoDescriptor(id=photo_id, title=None, caption=None, thumbnail=None, fullSize=None,
+    descriptor = PhotoDescriptor(id=photo_id, title=None, caption=None, thumbnail=None, fullSize=None, aspectRatio=None,
                                  location=PhotoDescriptorLocation(lat=None, lng=None, name=None),
                                  metadata=PhotoDescriptorMetadata(camera=None, lens=None, focal=None, iso=None,
                                                                   aperture=None, shutterSpeed=None), tags=[],
@@ -193,6 +203,8 @@ def main():
             except Exception as e:
                 logger.warning(f"when read {path} exif information, exception {e} found")
                 continue
+
+            photo_descriptor.aspectRatio = get_aspect_ratio(path)
 
             photo_descriptor.metadata.camera = exif_info.get("model")
             photo_descriptor.metadata.lens = exif_info.get("lens_model")
