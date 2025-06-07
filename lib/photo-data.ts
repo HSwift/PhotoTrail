@@ -4,6 +4,7 @@ export interface PhotoData {
   caption: string;
   thumbnail: string;
   fullSize: string;
+  aspectRatio: number;
   location: {
     lat: number;
     lng: number;
@@ -28,6 +29,7 @@ export const photoData: PhotoData[] = [
     caption: "Iconic bridge shrouded in morning fog",
     thumbnail: "https://picsum.photos/1800/1200?t=1",
     fullSize: "https://picsum.photos/1800/1200?t=1",
+    aspectRatio: 1.5,
     location: {
       lat: 37.8199,
       lng: -122.4783,
@@ -50,6 +52,7 @@ export const photoData: PhotoData[] = [
     caption: "Fall colors painting the park in warm hues",
     thumbnail: "https://picsum.photos/1800/1200?t=2",
     fullSize: "https://picsum.photos/1800/1200?t=2",
+    aspectRatio: 1.5,
     location: {
       lat: 40.7829,
       lng: -73.9654,
@@ -72,6 +75,7 @@ export const photoData: PhotoData[] = [
     caption: "Blue domes against the Aegean Sea",
     thumbnail: "https://picsum.photos/1200/1800?t=4",
     fullSize: "https://picsum.photos/1200/1800?t=4",
+    aspectRatio: 0.667,
     location: {
       lat: 36.3932,
       lng: 25.4615,
@@ -94,6 +98,7 @@ export const photoData: PhotoData[] = [
     caption: "Vibrant street life in Shibuya district",
     thumbnail: "https://picsum.photos/1200/1800?t=3",
     fullSize: "https://picsum.photos/1200/1800?t=3",
+    aspectRatio: 0.667,
     location: {
       lat: 35.6762,
       lng: 139.6503,
@@ -117,6 +122,7 @@ export const photoData: PhotoData[] = [
     caption: "Pristine mountain lake reflecting snow-capped peaks",
     thumbnail: "https://picsum.photos/1800/1200?t=5",
     fullSize: "https://picsum.photos/1800/1200?t=5",
+    aspectRatio: 1.5,
     location: {
       lat: 51.4254,
       lng: -116.1773,
@@ -139,6 +145,7 @@ export const photoData: PhotoData[] = [
     caption: "Dramatic peaks of Torres del Paine",
     thumbnail: "https://picsum.photos/1200/1800?t=6",
     fullSize: "https://picsum.photos/1200/1800?t=6",
+    aspectRatio: 0.667,
     location: {
       lat: -50.9423,
       lng: -73.4068,

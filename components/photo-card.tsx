@@ -13,6 +13,8 @@ interface PhotoCardProps {
 }
 
 export function PhotoCard({ photo, onClick, isInView }: PhotoCardProps) {
+  const imageDefaultWidth = 1000;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -31,6 +33,8 @@ export function PhotoCard({ photo, onClick, isInView }: PhotoCardProps) {
             alt={photo.title}
             className="w-full h-auto object-cover"
             style={{ display: "block" }}
+            width={imageDefaultWidth}
+            height={Math.round(imageDefaultWidth / photo.aspectRatio)}
           />
           <div className="absolute inset-0 bg-black/0" />
         </div>
