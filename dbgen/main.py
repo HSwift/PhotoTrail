@@ -204,7 +204,7 @@ def main():
                     LOGGER.warning(f"{path} doesn't contains any exif information")
                     continue
             except Exception as e:
-                LOGGER.warning(f"when read {path} exif information, exception {e} found")
+                LOGGER.warning(f"while reading {path} exif information, exception found: {e}")
                 continue
 
             photo_descriptor.aspectRatio = get_aspect_ratio(path)
@@ -219,7 +219,7 @@ def main():
             if iso == 65535 and iso_alt is not None:
                 iso = iso_alt
             photo_descriptor.metadata.iso = iso
-            photo_descriptor.metadata.shutterSpeed = get_shutter_speed(exif_info.get("shutter_speed"))
+            photo_descriptor.metadata.shutterSpeed = get_shutter_speed(exif_info.get("exposure_time"))
 
             latitude = get_coordinate(exif_info.get("gps_latitude"))
             longitude = get_coordinate(exif_info.get("gps_longitude"))
