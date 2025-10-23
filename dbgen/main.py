@@ -102,6 +102,7 @@ class PhotoDescriptorMetadata(pydantic.BaseModel):
 
 class PhotoDescriptor(pydantic.BaseModel):
     id: str
+    source: str
     title: typing.Optional[str]
     caption: typing.Optional[str]
     thumbnail: typing.Optional[str]
@@ -117,7 +118,7 @@ def get_photo_descriptor(path: str) -> PhotoDescriptor:
     with open(path, "rb") as f:
         photo_id = hashlib.sha1(f.read()).hexdigest()
 
-    descriptor = PhotoDescriptor(id=photo_id, title=None, caption=None, thumbnail=None, fullSize=None, aspectRatio=None,
+    descriptor = PhotoDescriptor(id=photo_id, source=path, title=None, caption=None, thumbnail=None, fullSize=None, aspectRatio=None,
                                  location=PhotoDescriptorLocation(lat=None, lng=None, name=None),
                                  metadata=PhotoDescriptorMetadata(camera=None, lens=None, focal=None, iso=None,
                                                                   aperture=None, shutterSpeed=None), tags=[],
