@@ -34,7 +34,7 @@ def get_focal(raw_value: typing.Optional[float]) -> typing.Optional[str]:
     if raw_value is None:
         return None
 
-    return f'{int(round(raw_value))}mm'
+    return f"{int(round(raw_value))}mm"
 
 
 def get_aperture(raw_value: typing.Optional[float]) -> typing.Optional[str]:
@@ -44,12 +44,14 @@ def get_aperture(raw_value: typing.Optional[float]) -> typing.Optional[str]:
     aperture_value = round(raw_value, 2)
     # ends with x.00
     if math.floor(aperture_value) == aperture_value:
-        return f'ƒ/{int(aperture_value)}'
+        return f"ƒ/{int(aperture_value)}"
     else:
-        return f'ƒ/{aperture_value}'
+        return f"ƒ/{aperture_value}"
 
 
-def get_coordinate(raw_value: typing.Optional[typing.Tuple[float, float, float]]) -> typing.Optional[float]:
+def get_coordinate(
+    raw_value: typing.Optional[typing.Tuple[float, float, float]],
+) -> typing.Optional[float]:
     if raw_value is None:
         return None
 
@@ -59,9 +61,9 @@ def get_coordinate(raw_value: typing.Optional[typing.Tuple[float, float, float]]
 
 def get_location_name(coordinate: typing.Tuple[float, float]) -> typing.Optional[str]:
     loc = reverse_geocoder.RGeocoder(mode=2, verbose=False).query([coordinate])[0]
-    result = loc['cc']
+    result = loc["cc"]
     last = ""
-    for part in (loc['admin1'], loc['admin2'], loc['name']):
+    for part in (loc["admin1"], loc["admin2"], loc["name"]):
         if len(part) > 0 and last != part:
             result += f", {part}"
             last = part
@@ -118,11 +120,26 @@ def get_photo_descriptor(path: str) -> PhotoDescriptor:
     with open(path, "rb") as f:
         photo_id = hashlib.sha1(f.read()).hexdigest()
 
-    descriptor = PhotoDescriptor(id=photo_id, source=path, title=None, caption=None, thumbnail=None, fullSize=None, aspectRatio=None,
-                                 location=PhotoDescriptorLocation(lat=None, lng=None, name=None),
-                                 metadata=PhotoDescriptorMetadata(camera=None, lens=None, focal=None, iso=None,
-                                                                  aperture=None, shutterSpeed=None), tags=[],
-                                 dateTaken=None)
+    descriptor = PhotoDescriptor(
+        id=photo_id,
+        source=path,
+        title=None,
+        caption=None,
+        thumbnail=None,
+        fullSize=None,
+        aspectRatio=None,
+        location=PhotoDescriptorLocation(lat=None, lng=None, name=None),
+        metadata=PhotoDescriptorMetadata(
+            camera=None,
+            lens=None,
+            focal=None,
+            iso=None,
+            aperture=None,
+            shutterSpeed=None,
+        ),
+        tags=[],
+        dateTaken=None,
+    )
     return descriptor
 
 
@@ -138,10 +155,18 @@ def open_database(db_file: str) -> typing.List[PhotoDescriptor]:
 
 def save_database(db_file: str, db_photos: typing.List[PhotoDescriptor]):
     with open(db_file, "w") as f:
-        f.write(json.dumps(list(map(lambda x: x.model_dump(), db_photos)), indent=4, ensure_ascii=False))
+        f.write(
+            json.dumps(
+                list(map(lambda x: x.model_dump(), db_photos)),
+                indent=4,
+                ensure_ascii=False,
+            )
+        )
 
 
-def merge_photo(db_photo: PhotoDescriptor, new_photo: PhotoDescriptor) -> PhotoDescriptor:
+def merge_photo(
+    db_photo: PhotoDescriptor, new_photo: PhotoDescriptor
+) -> PhotoDescriptor:
     # 如果 value = None, 从 new_model 中合并值
     def merge_model(model, new_model):
         if model is None:
@@ -156,9 +181,10 @@ def merge_photo(db_photo: PhotoDescriptor, new_photo: PhotoDescriptor) -> PhotoD
     return db_photo
 
 
-def merge_database(db_photos: typing.List[PhotoDescriptor],
-                   new_photos: typing.Dict[str, PhotoDescriptor]) -> \
-        typing.List[PhotoDescriptor]:
+def merge_database(
+    db_photos: typing.List[PhotoDescriptor],
+    new_photos: typing.Dict[str, PhotoDescriptor],
+) -> typing.List[PhotoDescriptor]:
     db_photos_dict = {}
     for photo in db_photos:
         db_photos_dict[photo.id] = photo
@@ -170,16 +196,26 @@ def merge_database(db_photos: typing.List[PhotoDescriptor],
             db_photos_dict[key] = value
 
     db_photos = list(db_photos_dict.values())
-    db_photos.sort(key=lambda x: datetime.datetime.strptime(x.dateTaken,
-                                                            "%Y/%m/%d %H:%M:%S").timestamp() if x.dateTaken is not None else 0,
-                   reverse=True)
+    db_photos.sort(
+        key=lambda x: (
+            datetime.datetime.strptime(x.dateTaken, "%Y/%m/%d %H:%M:%S").timestamp()
+            if x.dateTaken is not None
+            else 0
+        ),
+        reverse=True,
+    )
     return db_photos
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-f", "--filter", help="file extension filter", type=str,
-                        default=r".+\.(png|jpe?g|tiff?|webp|heic|heif)")
+    parser.add_argument(
+        "-f",
+        "--filter",
+        help="file extension filter",
+        type=str,
+        default=r".+\.(png|jpe?g|tiff?|webp|heic|heif)",
+    )
     parser.add_argument("image_dir", help="image dir path", type=str)
     parser.add_argument("db_file", help="database file path", type=str)
     args = parser.parse_args()
@@ -205,7 +241,9 @@ def main():
                     LOGGER.warning(f"{path} doesn't contains any exif information")
                     continue
             except Exception as e:
-                LOGGER.warning(f"while reading {path} exif information, exception found: {e}")
+                LOGGER.warning(
+                    f"while reading {path} exif information, exception found: {e}"
+                )
                 continue
 
             photo_descriptor.aspectRatio = get_aspect_ratio(path)
@@ -220,7 +258,9 @@ def main():
             if iso == 65535 and iso_alt is not None:
                 iso = iso_alt
             photo_descriptor.metadata.iso = iso
-            photo_descriptor.metadata.shutterSpeed = get_shutter_speed(exif_info.get("exposure_time"))
+            photo_descriptor.metadata.shutterSpeed = get_shutter_speed(
+                exif_info.get("exposure_time")
+            )
 
             latitude = get_coordinate(exif_info.get("gps_latitude"))
             longitude = get_coordinate(exif_info.get("gps_longitude"))
@@ -231,7 +271,9 @@ def main():
             photo_descriptor.location.lat = latitude
             photo_descriptor.location.lng = longitude
             photo_descriptor.location.name = location
-            photo_descriptor.dateTaken = get_datetime(exif_info.get("datetime_original"))
+            photo_descriptor.dateTaken = get_datetime(
+                exif_info.get("datetime_original")
+            )
 
     save_database(db_file, merge_database(db_photos, photos))
 
