@@ -154,6 +154,15 @@ def open_database(db_file: str) -> typing.List[PhotoDescriptor]:
 
 
 def save_database(db_file: str, db_photos: typing.List[PhotoDescriptor]):
+    def compare(photo: PhotoDescriptor):
+        return (
+            datetime.datetime.strptime(photo.dateTaken, "%Y/%m/%d %H:%M:%S").timestamp()
+            if photo.dateTaken is not None
+            else 0
+        )
+    
+    db_photos.sort(key=compare, reverse=False)
+
     with open(db_file, "w") as f:
         f.write(
             json.dumps(
