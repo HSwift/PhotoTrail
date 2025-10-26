@@ -64,9 +64,9 @@ export function PhotoGallery({ project }: PhotoGalleryProps) {
           >
             <div>
               <div className="mb-6">
-                <h1 className="text-3xl font-normal mb-2">Photo Journey</h1>
+                <h1 className="text-3xl font-normal mb-2">{project.title}</h1>
                 <p className="text-muted-foreground text-sm">
-                  A collection of moments captured around the world
+                  {project.description}
                 </p>
               </div>
 
