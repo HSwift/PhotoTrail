@@ -14,6 +14,18 @@ interface PhotoViewerProps {
 
 export function PhotoViewer({ photo, onClose }: PhotoViewerProps) {
   const [fullSizeLoaded, setFullSizeLoaded] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  // Detect screen size
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsDesktop(window.innerWidth >= 1024); // lg breakpoint in Tailwind
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   // Preload full-size image
   useEffect(() => {
@@ -57,18 +69,21 @@ export function PhotoViewer({ photo, onClose }: PhotoViewerProps) {
             <X className="w-4 h-4" />
           </Button>
 
-          <div className="flex flex-col lg:flex-row">
+          <div className="flex flex-col lg:flex-row max-h-[90vh] ">
             <div
-              className="flex-1 relative flex items-center justify-center overflow-hidden p-4"
+              className="relative flex items-center justify-center overflow-hidden"
               style={{
-                backgroundImage: `url(${
-                  photo.thumbnail || "/placeholder.svg"
-                })`,
+                backgroundImage: `url(${photo.thumbnail || "/placeholder.svg"})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
-                height: "80vh",
-                aspectRatio: photo.aspectRatio || 1,
-                padding: 0,
+                aspectRatio: photo.aspectRatio,
+                ...(isDesktop 
+                  ? (photo.aspectRatio && photo.aspectRatio > 1 
+                    ? { width: '70vw' }
+                    : { height: '90vh' }
+                  )
+                  : { width: '95vw' }
+                ),
               }}
             >
               <img
@@ -79,7 +94,7 @@ export function PhotoViewer({ photo, onClose }: PhotoViewerProps) {
               />
             </div>
 
-            <div className="lg:w-80 p-6 bg-white overflow-y-auto">
+            <div className="p-6 bg-white overflow-y-auto flex-1 lg:flex-none">
               <h2 className="text-2xl font-bold mb-2">{photo.title}</h2>
               <p className="text-muted-foreground mb-4">{photo.caption}</p>
 
