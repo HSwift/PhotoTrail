@@ -1,11 +1,16 @@
 import argparse
+import base64
 import datetime
 import hashlib
+import io
 import json
 import logging
 import math
 import os
+from pathlib import Path
 import re
+import shutil
+from tkinter import N
 import typing
 
 from PIL import Image
@@ -104,16 +109,21 @@ class PhotoDescriptorMetadata(pydantic.BaseModel):
 
 class PhotoDescriptor(pydantic.BaseModel):
     id: str
-    source: str
+    source: str | None = None
     title: typing.Optional[str]
     caption: typing.Optional[str]
     thumbnail: typing.Optional[str]
+    preview: typing.Optional[str]
     fullSize: typing.Optional[str]
     aspectRatio: typing.Optional[float]
     location: PhotoDescriptorLocation
     metadata: PhotoDescriptorMetadata
     tags: typing.List[str]
     dateTaken: typing.Optional[str]
+
+    # 序列化时不输出source
+    class Config:
+        exclude = {"source"}
 
 
 def get_photo_descriptor(path: str) -> PhotoDescriptor:
@@ -126,6 +136,7 @@ def get_photo_descriptor(path: str) -> PhotoDescriptor:
         title=None,
         caption=None,
         thumbnail=None,
+        preview=None,
         fullSize=None,
         aspectRatio=None,
         location=PhotoDescriptorLocation(lat=None, lng=None, name=None),
@@ -160,7 +171,7 @@ def save_database(db_file: str, db_photos: typing.List[PhotoDescriptor]):
             if photo.dateTaken is not None
             else 0
         )
-    
+
     db_photos.sort(key=compare, reverse=False)
 
     with open(db_file, "w") as f:
@@ -181,6 +192,9 @@ def merge_photo(
         if model is None:
             return
         for key in model.model_fields_set:
+            exclude_keys = model.model_config.get('exclude', [])
+            if key in exclude_keys:
+                continue
             if getattr(model, key) is None:
                 setattr(model, key, getattr(new_model, key))
 
@@ -216,7 +230,175 @@ def merge_database(
     return db_photos
 
 
+def copy_photos_to_output(
+    photos: typing.Dict[str, PhotoDescriptor], output_dir: Path
+) -> None:
+    LOGGER.info(f"开始生成原图")
+    for photo_id, photo in photos.items():
+        if not hasattr(photo, "source") or photo.source is None:
+            LOGGER.warning(f"Photo {photo_id} has no source path, skipping copy")
+            continue
+
+        source_path = Path(photo.source)
+        if not source_path.exists():
+            LOGGER.warning(f"Source file {source_path} does not exist, skipping copy")
+            continue
+
+        output_filename = f"{photo_id}.webp"
+        output_path = output_dir / output_filename
+
+        try:
+            with Image.open(source_path) as img:
+                # Convert to RGB if necessary (for RGBA, CMYK, etc.)
+                if img.mode in ("RGBA", "LA", "P"):
+                    img = img.convert("RGB")
+                elif img.mode == "CMYK":
+                    img = img.convert("RGB")
+
+                # Save as WebP with high quality to maintain similar quality to original
+                # Use quality=90 to maintain high quality while still compressing
+                img.save(
+                    output_path, 
+                    format="WEBP", 
+                    quality=90, 
+                    optimize=True,
+                    method=6  # Use best compression method
+                )
+                size_kb = len(output_path.read_bytes()) / 1024
+                LOGGER.info(f"Converted {source_path} to WebP {output_path} ({size_kb:.1f}kb)")
+        except Exception as e:
+            LOGGER.error(f"Failed to convert {source_path} to {output_path}: {e}")
+
+
+def generate_preview_image(
+    photos: typing.Dict[str, PhotoDescriptor], output_dir: Path
+) -> None:
+    LOGGER.info(f"开始生成预览图")
+    for photo_id, photo in photos.items():
+        if not hasattr(photo, "source") or photo.source is None:
+            LOGGER.warning(
+                f"Photo {photo_id} has no source path, skipping preview generation"
+            )
+            continue
+
+        source_path = Path(photo.source)
+        if not source_path.exists():
+            LOGGER.warning(
+                f"Source file {source_path} does not exist, skipping preview generation"
+            )
+            continue
+
+        preview_filename = f"{photo_id}_preview.webp"
+        preview_path = output_dir / preview_filename
+
+        try:
+            with Image.open(source_path) as img:
+                # Convert to RGB if necessary (for RGBA, CMYK, etc.)
+                if img.mode in ("RGBA", "LA", "P"):
+                    img = img.convert("RGB")
+                elif img.mode == "CMYK":
+                    img = img.convert("RGB")
+
+                # Calculate dimensions to achieve ~100kb target
+                # Start with a reasonable size and adjust quality
+                max_dimension = 1200
+                if img.width > img.height:
+                    new_width = min(max_dimension, img.width)
+                    new_height = int((new_width * img.height) / img.width)
+                else:
+                    new_height = min(max_dimension, img.height)
+                    new_width = int((new_height * img.width) / img.height)
+
+                # Resize image
+                img_resized = img.resize(
+                    (new_width, new_height), Image.Resampling.LANCZOS
+                )
+
+                # Save with quality adjustment to target ~100kb
+                quality = 85
+                while quality > 40:
+                    buffer = io.BytesIO()
+                    img_resized.save(
+                        buffer, format="WEBP", quality=quality, optimize=True
+                    )
+                    size_kb = len(buffer.getvalue()) / 1024
+
+                    if size_kb <= 120:
+                        break
+                    quality -= 10
+
+                # Save final image
+                img_resized.save(
+                    preview_path, format="WEBP", quality=quality, optimize=True
+                )
+                LOGGER.info(f"Generated preview {preview_path} ({size_kb:.1f}kb)")
+
+        except Exception as e:
+            LOGGER.error(f"Failed to generate preview for {source_path}: {e}")
+
+
+def generate_thumbnail_base64(photos: typing.Dict[str, PhotoDescriptor]) -> None:
+    LOGGER.info(f"开始生成缩略图")
+    for photo_id, photo in photos.items():
+        if not hasattr(photo, "source") or photo.source is None:
+            LOGGER.warning(
+                f"Photo {photo_id} has no source path, skipping thumbnail generation"
+            )
+            continue
+
+        source_path = Path(photo.source)
+        if not source_path.exists():
+            LOGGER.warning(
+                f"Source file {source_path} does not exist, skipping thumbnail generation"
+            )
+            continue
+
+        try:
+            with Image.open(source_path) as img:
+                # Convert to RGB if necessary
+                if img.mode in ("RGBA", "LA", "P"):
+                    img = img.convert("RGB")
+                elif img.mode == "CMYK":
+                    img = img.convert("RGB")
+
+                # Create a very small thumbnail (e.g., 8x8 or 16x16 pixels)
+                thumbnail_size = (8, 8)
+                img_thumbnail = img.resize(thumbnail_size, Image.Resampling.LANCZOS)
+
+                # Convert to base64
+                buffer = io.BytesIO()
+                img_thumbnail.save(buffer, format="JPEG", quality=50, optimize=True)
+                thumbnail_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
+
+                # Update the photo descriptor
+                photo.thumbnail = f"data:image/jpeg;base64,{thumbnail_base64}"
+                LOGGER.info(f"Generated base64 thumbnail for {photo_id}")
+
+        except Exception as e:
+            LOGGER.error(f"Failed to generate thumbnail for {source_path}: {e}")
+
+
+def create_image_output(
+    output_dir: Path, photos: typing.Dict[str, PhotoDescriptor]
+):
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    copy_photos_to_output(photos, output_dir)
+    generate_preview_image(photos, output_dir)
+    generate_thumbnail_base64(photos)
+
+    for photo_id, photo in photos.items():
+        if hasattr(photo, "source") and photo.source is not None:
+            output_filename = f"{photo_id}.webp"
+            photo.fullSize = str(output_dir / output_filename)
+
+        # Set preview path
+        preview_filename = f"{photo_id}_preview.webp"
+        photo.preview = str(output_dir / preview_filename)
+
+
 def main():
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-f",
@@ -226,12 +408,14 @@ def main():
         default=r".+\.(png|jpe?g|tiff?|webp|heic|heif)",
     )
     parser.add_argument("image_dir", help="image dir path", type=str)
-    parser.add_argument("db_file", help="database file path", type=str)
+    parser.add_argument("project_name", help="project name", type=str)
     args = parser.parse_args()
 
     ext_filter = re.compile(args.filter, flags=re.IGNORECASE)
     image_dir = args.image_dir
-    db_file = args.db_file
+    project_name = args.project_name
+    output_dir = Path(project_name)
+    db_file = project_name + ".json"
 
     db_photos = open_database(db_file)
     photos: typing.Dict[str, PhotoDescriptor] = {}
@@ -283,8 +467,11 @@ def main():
             photo_descriptor.dateTaken = get_datetime(
                 exif_info.get("datetime_original")
             )
-
-    save_database(db_file, merge_database(db_photos, photos))
+    LOGGER.info(f"图片元数据读取完毕, 开始生成图片输出")
+    create_image_output(output_dir, photos)
+    merged_photos = merge_database(db_photos, photos)
+    save_database(db_file, merged_photos)
+    LOGGER.info(f"项目构建完成，请编辑 {db_file} 文件，添加图片描述信息")
 
 
 if __name__ == "__main__":
