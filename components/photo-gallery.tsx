@@ -6,13 +6,14 @@ import { PhotoViewer } from "./photo-viewer";
 import { PhotoMap } from "./photo-map";
 import { useScrollSpy } from "@/hooks/use-scroll-spy";
 import { useIsMobile } from "@/hooks/use-mobile";
-import type { PhotoData } from "@/lib/photo-data";
+import type { PhotoData, ProjectData } from "@/lib/photo-data";
 
 interface PhotoGalleryProps {
-  photos: PhotoData[];
+  project: ProjectData;
 }
 
-export function PhotoGallery({ photos }: PhotoGalleryProps) {
+export function PhotoGallery({ project }: PhotoGalleryProps) {
+  const photos = project.photos;
   const [selectedPhoto, setSelectedPhoto] = useState<PhotoData | null>(null);
   const photoIds = useMemo(() => photos.map((photo) => `photo-${photo.id}`), [
     photos,
@@ -108,9 +109,9 @@ export function PhotoGallery({ photos }: PhotoGalleryProps) {
         >
           <div className="p-6 lg:mx-16">
             <div className="mb-8">
-              <h1 className="text-4xl font-normal mb-2">Photo Journey</h1>
+              <h1 className="text-4xl font-normal mb-2">{project.title}</h1>
               <p className="text-muted-foreground">
-                A collection of moments captured around the world
+                {project.description}
               </p>
             </div>
 

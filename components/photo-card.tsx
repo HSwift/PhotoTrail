@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Aperture, Calendar, Camera, MapPin } from "lucide-react";
 import type { PhotoData } from "@/lib/photo-data";
@@ -14,6 +15,16 @@ interface PhotoCardProps {
 
 export function PhotoCard({ photo, onClick, isInView }: PhotoCardProps) {
   const imageDefaultWidth = 1000;
+  const [previewLoaded, setPreviewLoaded] = useState(false);
+
+  // Preload preview image
+  useEffect(() => {
+    const preloadImage = new Image();
+    preloadImage.onload = () => {
+      setPreviewLoaded(true);
+    };
+    preloadImage.src = photo.preview;
+  }, [photo.preview]);
 
   return (
     <motion.div
@@ -27,14 +38,29 @@ export function PhotoCard({ photo, onClick, isInView }: PhotoCardProps) {
           isInView ? "shadow-md" : ""
         }`}
       >
-        <div className="relative group w-full cursor-zoom-in" onClick={onClick}>
+        <div 
+          className="relative group w-full cursor-zoom-in" 
+          onClick={onClick}
+          style={{
+            backgroundImage: `url(${photo.thumbnail || "/placeholder.svg"})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            aspectRatio: photo.aspectRatio || 1,
+          }}
+        >
           <img
-            src={photo.thumbnail || "/placeholder.svg"}
-            alt={photo.title}
+            src={photo.preview}
+            alt={photo.title || "Photo"}
+            loading="eager"
+            decoding="async"
             className="w-full h-auto object-cover"
-            style={{ display: "block" }}
+            style={{ 
+              display: "block",
+              opacity: previewLoaded ? 1 : 0,
+              transition: 'opacity 0.3s ease-in-out'
+            }}
             width={imageDefaultWidth}
-            height={Math.round(imageDefaultWidth / photo.aspectRatio)}
+            height={photo.aspectRatio ? Math.round(imageDefaultWidth / photo.aspectRatio) : imageDefaultWidth}
           />
           <div className="absolute inset-0 bg-black/0" />
         </div>

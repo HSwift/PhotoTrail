@@ -33,12 +33,15 @@ export function PhotoMap({ photos, currentPhotoIndex }: PhotoMapProps) {
       setMapLoaded(true);
     });
 
+    map.current.prefetchZoomDelta = 2;
+
     return () => {
       if (map.current) {
         map.current.remove();
       }
     };
-  }, [mapboxgl, photos]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run once on mount
 
   useEffect(() => {
     if (!map.current || !mapLoaded || !mapboxgl) return;
@@ -138,7 +141,9 @@ export function PhotoMap({ photos, currentPhotoIndex }: PhotoMapProps) {
           photos[currentPhotoIndex].location.lng,
           photos[currentPhotoIndex].location.lat,
         ],
-        zoom: 8,
+        curve: 1.5,
+        zoom: 14,
+        essential: true,
         duration: 2000,
       });
     }

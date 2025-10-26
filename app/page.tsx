@@ -1,6 +1,5 @@
-import { PhotoGallery } from "@/components/photo-gallery";
-import { photoData } from "@/lib/photo-data";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return <PhotoGallery photos={photoData} />;
+  redirect("/p/default");
 }

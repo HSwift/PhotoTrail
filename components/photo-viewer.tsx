@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Calendar, Camera, MapPin, X } from "lucide-react";
 import type { PhotoData } from "@/lib/photo-data";
@@ -12,6 +13,22 @@ interface PhotoViewerProps {
 }
 
 export function PhotoViewer({ photo, onClose }: PhotoViewerProps) {
+  const [fullSizeLoaded, setFullSizeLoaded] = useState(false);
+
+  // Preload full-size image
+  useEffect(() => {
+    if (!photo) return;
+
+    // Reset loaded state when photo changes
+    setFullSizeLoaded(false);
+
+    const preloadImage = new Image();
+    preloadImage.onload = () => {
+      setFullSizeLoaded(true);
+    };
+    preloadImage.src = photo.fullSize || "/placeholder.svg";
+  }, [photo]);
+
   if (!photo) return null;
 
   return (
@@ -41,11 +58,24 @@ export function PhotoViewer({ photo, onClose }: PhotoViewerProps) {
           </Button>
 
           <div className="flex flex-col lg:flex-row">
-            <div className="flex-1">
+            <div
+              className="flex-1 relative flex items-center justify-center overflow-hidden p-4"
+              style={{
+                backgroundImage: `url(${
+                  photo.thumbnail || "/placeholder.svg"
+                })`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                height: "80vh",
+                aspectRatio: photo.aspectRatio || 1,
+                padding: 0,
+              }}
+            >
               <img
                 src={photo.fullSize || "/placeholder.svg"}
                 alt={photo.title}
-                className="w-full h-auto max-h-[95vh] object-contain"
+                className="w-full h-full object-contain"
+                loading="eager"
               />
             </div>
 
