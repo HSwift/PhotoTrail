@@ -85,6 +85,21 @@ export function PhotoGallery({ project }: PhotoGalleryProps) {
                   </div>
                 ))}
               </div>
+
+              {/* Footer */}
+              <div className="mt-12 mb-6 text-center text-sm text-muted-foreground">
+                <p>
+                  build your own photo gallery with ❤️{" "}
+                  <a
+                    href="https://github.com/HSwift/PhotoTrail"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-foreground transition-colors"
+                  >
+                    https://github.com/HSwift/PhotoTrail
+                  </a>
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -129,6 +144,21 @@ export function PhotoGallery({ project }: PhotoGalleryProps) {
                     />
                   </div>
                 ))}
+              </div>
+
+              {/* Footer */}
+              <div className="mt-12 mb-6 text-center text-sm text-muted-foreground">
+                <p>
+                  build your own photo gallery with ❤️{" "}
+                  <a
+                    href="https://github.com/HSwift/PhotoTrail"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-foreground transition-colors"
+                  >
+                    https://github.com/HSwift/PhotoTrail
+                  </a>
+                </p>
               </div>
             </div>
           </div>
