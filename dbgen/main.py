@@ -13,7 +13,7 @@ import shutil
 from tkinter import N
 import typing
 
-from PIL import Image
+from PIL import Image, ImageOps
 import exif
 import pydantic
 import reverse_geocoder
@@ -126,6 +126,14 @@ class PhotoDescriptor(pydantic.BaseModel):
         exclude = {"source"}
 
 
+class Project(pydantic.BaseModel):
+    name: str = ""
+    title: str = ""
+    description: str = ""
+    base_url: str = ""
+    photos: typing.List[PhotoDescriptor]
+
+
 def get_photo_descriptor(path: str) -> PhotoDescriptor:
     with open(path, "rb") as f:
         photo_id = hashlib.sha1(f.read()).hexdigest()
@@ -160,39 +168,40 @@ def open_database(db_file: str) -> typing.List[PhotoDescriptor]:
 
     with open(db_file, "rb") as f:
         content = f.read()
-    descriptors = json.loads(content)
-    return list(map(lambda x: PhotoDescriptor.model_validate(x), descriptors))
+    project_data = Project.model_validate_json(content)
+    return project_data.photos
 
 
 def save_database(db_file: str, db_photos: typing.List[PhotoDescriptor]):
     def compare(photo: PhotoDescriptor):
-        return (
-            datetime.datetime.strptime(photo.dateTaken, "%Y/%m/%d %H:%M:%S").timestamp()
-            if photo.dateTaken is not None
-            else 0
-        )
+        return datetime.datetime.strptime(photo.dateTaken, "%Y/%m/%d %H:%M:%S").timestamp() if photo.dateTaken is not None else 0
 
     db_photos.sort(key=compare, reverse=False)
+    project = Project(
+        name="",
+        title="",
+        description="",
+        base_url="",
+        photos=db_photos,
+    )
 
     with open(db_file, "w") as f:
         f.write(
             json.dumps(
-                list(map(lambda x: x.model_dump(), db_photos)),
+                project.model_dump(),
                 indent=4,
                 ensure_ascii=False,
             )
         )
 
 
-def merge_photo(
-    db_photo: PhotoDescriptor, new_photo: PhotoDescriptor
-) -> PhotoDescriptor:
+def merge_photo(db_photo: PhotoDescriptor, new_photo: PhotoDescriptor) -> PhotoDescriptor:
     # 如果 value = None, 从 new_model 中合并值
     def merge_model(model, new_model):
         if model is None:
             return
         for key in model.model_fields_set:
-            exclude_keys = model.model_config.get('exclude', [])
+            exclude_keys = model.model_config.get("exclude", [])
             if key in exclude_keys:
                 continue
             if getattr(model, key) is None:
@@ -220,19 +229,13 @@ def merge_database(
 
     db_photos = list(db_photos_dict.values())
     db_photos.sort(
-        key=lambda x: (
-            datetime.datetime.strptime(x.dateTaken, "%Y/%m/%d %H:%M:%S").timestamp()
-            if x.dateTaken is not None
-            else 0
-        ),
+        key=lambda x: (datetime.datetime.strptime(x.dateTaken, "%Y/%m/%d %H:%M:%S").timestamp() if x.dateTaken is not None else 0),
         reverse=True,
     )
     return db_photos
 
 
-def copy_photos_to_output(
-    photos: typing.Dict[str, PhotoDescriptor], output_dir: Path
-) -> None:
+def copy_photos_to_output(photos: typing.Dict[str, PhotoDescriptor], output_dir: Path) -> None:
     LOGGER.info(f"开始生成原图")
     for photo_id, photo in photos.items():
         if not hasattr(photo, "source") or photo.source is None:
@@ -249,6 +252,9 @@ def copy_photos_to_output(
 
         try:
             with Image.open(source_path) as img:
+                # Apply EXIF orientation data to fix image orientation
+                img = ImageOps.exif_transpose(img)
+
                 # Convert to RGB if necessary (for RGBA, CMYK, etc.)
                 if img.mode in ("RGBA", "LA", "P"):
                     img = img.convert("RGB")
@@ -257,35 +263,23 @@ def copy_photos_to_output(
 
                 # Save as WebP with high quality to maintain similar quality to original
                 # Use quality=90 to maintain high quality while still compressing
-                img.save(
-                    output_path, 
-                    format="WEBP", 
-                    quality=90, 
-                    optimize=True,
-                    method=6  # Use best compression method
-                )
+                img.save(output_path, format="WEBP", quality=90, optimize=True, method=6)  # Use best compression method
                 size_kb = len(output_path.read_bytes()) / 1024
                 LOGGER.info(f"Converted {source_path} to WebP {output_path} ({size_kb:.1f}kb)")
         except Exception as e:
             LOGGER.error(f"Failed to convert {source_path} to {output_path}: {e}")
 
 
-def generate_preview_image(
-    photos: typing.Dict[str, PhotoDescriptor], output_dir: Path
-) -> None:
+def generate_preview_image(photos: typing.Dict[str, PhotoDescriptor], output_dir: Path) -> None:
     LOGGER.info(f"开始生成预览图")
     for photo_id, photo in photos.items():
         if not hasattr(photo, "source") or photo.source is None:
-            LOGGER.warning(
-                f"Photo {photo_id} has no source path, skipping preview generation"
-            )
+            LOGGER.warning(f"Photo {photo_id} has no source path, skipping preview generation")
             continue
 
         source_path = Path(photo.source)
         if not source_path.exists():
-            LOGGER.warning(
-                f"Source file {source_path} does not exist, skipping preview generation"
-            )
+            LOGGER.warning(f"Source file {source_path} does not exist, skipping preview generation")
             continue
 
         preview_filename = f"{photo_id}_preview.webp"
@@ -293,6 +287,9 @@ def generate_preview_image(
 
         try:
             with Image.open(source_path) as img:
+                # Apply EXIF orientation data to fix image orientation
+                img = ImageOps.exif_transpose(img)
+
                 # Convert to RGB if necessary (for RGBA, CMYK, etc.)
                 if img.mode in ("RGBA", "LA", "P"):
                     img = img.convert("RGB")
@@ -310,17 +307,13 @@ def generate_preview_image(
                     new_width = int((new_height * img.width) / img.height)
 
                 # Resize image
-                img_resized = img.resize(
-                    (new_width, new_height), Image.Resampling.LANCZOS
-                )
+                img_resized = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
 
                 # Save with quality adjustment to target ~100kb
                 quality = 85
                 while quality > 40:
                     buffer = io.BytesIO()
-                    img_resized.save(
-                        buffer, format="WEBP", quality=quality, optimize=True
-                    )
+                    img_resized.save(buffer, format="WEBP", quality=quality, optimize=True)
                     size_kb = len(buffer.getvalue()) / 1024
 
                     if size_kb <= 120:
@@ -328,9 +321,7 @@ def generate_preview_image(
                     quality -= 10
 
                 # Save final image
-                img_resized.save(
-                    preview_path, format="WEBP", quality=quality, optimize=True
-                )
+                img_resized.save(preview_path, format="WEBP", quality=quality, optimize=True)
                 LOGGER.info(f"Generated preview {preview_path} ({size_kb:.1f}kb)")
 
         except Exception as e:
@@ -341,20 +332,19 @@ def generate_thumbnail_base64(photos: typing.Dict[str, PhotoDescriptor]) -> None
     LOGGER.info(f"开始生成缩略图")
     for photo_id, photo in photos.items():
         if not hasattr(photo, "source") or photo.source is None:
-            LOGGER.warning(
-                f"Photo {photo_id} has no source path, skipping thumbnail generation"
-            )
+            LOGGER.warning(f"Photo {photo_id} has no source path, skipping thumbnail generation")
             continue
 
         source_path = Path(photo.source)
         if not source_path.exists():
-            LOGGER.warning(
-                f"Source file {source_path} does not exist, skipping thumbnail generation"
-            )
+            LOGGER.warning(f"Source file {source_path} does not exist, skipping thumbnail generation")
             continue
 
         try:
             with Image.open(source_path) as img:
+                # Apply EXIF orientation data to fix image orientation
+                img = ImageOps.exif_transpose(img)
+
                 # Convert to RGB if necessary
                 if img.mode in ("RGBA", "LA", "P"):
                     img = img.convert("RGB")
@@ -378,9 +368,7 @@ def generate_thumbnail_base64(photos: typing.Dict[str, PhotoDescriptor]) -> None
             LOGGER.error(f"Failed to generate thumbnail for {source_path}: {e}")
 
 
-def create_image_output(
-    output_dir: Path, photos: typing.Dict[str, PhotoDescriptor]
-):
+def create_image_output(output_dir: Path, photos: typing.Dict[str, PhotoDescriptor]):
     output_dir.mkdir(parents=True, exist_ok=True)
 
     copy_photos_to_output(photos, output_dir)
@@ -395,6 +383,7 @@ def create_image_output(
         # Set preview path
         preview_filename = f"{photo_id}_preview.webp"
         photo.preview = str(output_dir / preview_filename)
+        photo.aspectRatio = get_aspect_ratio(photo.fullSize)
 
 
 def main():
@@ -434,9 +423,7 @@ def main():
                     LOGGER.warning(f"{path} doesn't contains any exif information")
                     continue
             except Exception as e:
-                LOGGER.warning(
-                    f"while reading {path} exif information, exception found: {e}"
-                )
+                LOGGER.warning(f"while reading {path} exif information, exception found: {e}")
                 continue
 
             photo_descriptor.aspectRatio = get_aspect_ratio(path)
@@ -451,9 +438,7 @@ def main():
             if iso == 65535 and iso_alt is not None:
                 iso = iso_alt
             photo_descriptor.metadata.iso = iso
-            photo_descriptor.metadata.shutterSpeed = get_shutter_speed(
-                exif_info.get("exposure_time")
-            )
+            photo_descriptor.metadata.shutterSpeed = get_shutter_speed(exif_info.get("exposure_time"))
 
             latitude = get_coordinate(exif_info.get("gps_latitude"))
             longitude = get_coordinate(exif_info.get("gps_longitude"))
@@ -464,9 +449,7 @@ def main():
             photo_descriptor.location.lat = latitude
             photo_descriptor.location.lng = longitude
             photo_descriptor.location.name = location
-            photo_descriptor.dateTaken = get_datetime(
-                exif_info.get("datetime_original")
-            )
+            photo_descriptor.dateTaken = get_datetime(exif_info.get("datetime_original"))
     LOGGER.info(f"图片元数据读取完毕, 开始生成图片输出")
     create_image_output(output_dir, photos)
     merged_photos = merge_database(db_photos, photos)
