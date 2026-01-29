@@ -115,7 +115,7 @@ importers:
         version: 8.5.1(react@19.1.0)
       framer-motion:
         specifier: latest
-        version: 12.23.26(@emotion/is-prop-valid@1.4.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 12.29.2(@emotion/is-prop-valid@1.4.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       input-otp:
         specifier: 1.4.1
         version: 1.4.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -124,10 +124,10 @@ importers:
         version: 0.454.0(react@19.1.0)
       mapbox-gl:
         specifier: latest
-        version: 3.17.0
+        version: 3.18.1
       next:
-        specifier: 15.4.9
-        version: 15.4.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        specifier: 16.1.5
+        version: 16.1.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       next-themes:
         specifier: ^0.4.4
         version: 0.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -194,8 +194,8 @@ packages:
     resolution: {integrity: sha512-7EYtGezsdiDMyY80+65EzwiGmcJqpmcZCojSXaRgdrBaGtWTgDZKq69cPIVped6MkIM78cTQ2GOiEYjwOlG4xw==}
     engines: {node: '>=6.9.0'}
 
-  '@emnapi/runtime@1.7.1':
-    resolution: {integrity: sha512-PVtJr5CmLwYAU9PZDMITZoR5iAOShYREoR45EyyLrbntV50mdePTgUn4AmOw90Ifcj+x2kRjdzr1HP3RrNiHGA==}
+  '@emnapi/runtime@1.8.1':
+    resolution: {integrity: sha512-mehfKSMWjjNol8659Z8KxEMrdSJDDot5SXMq00dM8BN4o+CLNXQ0xH2V7EchNHV4RmbZLmmPdEaXZc5H2FXmDg==}
 
   '@emotion/is-prop-valid@1.4.0':
     resolution: {integrity: sha512-QgD4fyscGcbbKwJmqNvUMSE02OsHUa+lAWKdEUIJKgqe5IwRSKd7+KhibEWdaKwgjLj0DRSHA9biAIqGBk05lw==}
@@ -405,53 +405,53 @@ packages:
     resolution: {integrity: sha512-Es6WcD0nO5l+2BOQS4uLfNPYQaNDfbot3X1XUoloz+x0mPDS3eeORZJl06HXjwBG1fOGwCRnzK88LMdxKRrd6Q==}
     engines: {node: '>=6.0.0'}
 
-  '@next/env@15.4.9':
-    resolution: {integrity: sha512-OYR0RulK5phnbxxzcLE4/ECgfx1PL3EHrDbjyelJ7jauaO+/Qvj5gG8JPMltB51CygC2KrZ0aAfYLjPYjYY17A==}
+  '@next/env@16.1.5':
+    resolution: {integrity: sha512-CRSCPJiSZoi4Pn69RYBDI9R7YK2g59vLexPQFXY0eyw+ILevIenCywzg+DqmlBik9zszEnw2HLFOUlLAcJbL7g==}
 
-  '@next/swc-darwin-arm64@15.4.8':
-    resolution: {integrity: sha512-Pf6zXp7yyQEn7sqMxur6+kYcywx5up1J849psyET7/8pG2gQTVMjU3NzgIt8SeEP5to3If/SaWmaA6H6ysBr1A==}
+  '@next/swc-darwin-arm64@16.1.5':
+    resolution: {integrity: sha512-eK7Wdm3Hjy/SCL7TevlH0C9chrpeOYWx2iR7guJDaz4zEQKWcS1IMVfMb9UKBFMg1XgzcPTYPIp1Vcpukkjg6Q==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
 
-  '@next/swc-darwin-x64@15.4.8':
-    resolution: {integrity: sha512-xla6AOfz68a6kq3gRQccWEvFC/VRGJmA/QuSLENSO7CZX5WIEkSz7r1FdXUjtGCQ1c2M+ndUAH7opdfLK1PQbw==}
+  '@next/swc-darwin-x64@16.1.5':
+    resolution: {integrity: sha512-foQscSHD1dCuxBmGkbIr6ScAUF6pRoDZP6czajyvmXPAOFNnQUJu2Os1SGELODjKp/ULa4fulnBWoHV3XdPLfA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
 
-  '@next/swc-linux-arm64-gnu@15.4.8':
-    resolution: {integrity: sha512-y3fmp+1Px/SJD+5ntve5QLZnGLycsxsVPkTzAc3zUiXYSOlTPqT8ynfmt6tt4fSo1tAhDPmryXpYKEAcoAPDJw==}
+  '@next/swc-linux-arm64-gnu@16.1.5':
+    resolution: {integrity: sha512-qNIb42o3C02ccIeSeKjacF3HXotGsxh/FMk/rSRmCzOVMtoWH88odn2uZqF8RLsSUWHcAqTgYmPD3pZ03L9ZAA==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
-  '@next/swc-linux-arm64-musl@15.4.8':
-    resolution: {integrity: sha512-DX/L8VHzrr1CfwaVjBQr3GWCqNNFgyWJbeQ10Lx/phzbQo3JNAxUok1DZ8JHRGcL6PgMRgj6HylnLNndxn4Z6A==}
+  '@next/swc-linux-arm64-musl@16.1.5':
+    resolution: {integrity: sha512-U+kBxGUY1xMAzDTXmuVMfhaWUZQAwzRaHJ/I6ihtR5SbTVUEaDRiEU9YMjy1obBWpdOBuk1bcm+tsmifYSygfw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
-  '@next/swc-linux-x64-gnu@15.4.8':
-    resolution: {integrity: sha512-9fLAAXKAL3xEIFdKdzG5rUSvSiZTLLTCc6JKq1z04DR4zY7DbAPcRvNm3K1inVhTiQCs19ZRAgUerHiVKMZZIA==}
+  '@next/swc-linux-x64-gnu@16.1.5':
+    resolution: {integrity: sha512-gq2UtoCpN7Ke/7tKaU7i/1L7eFLfhMbXjNghSv0MVGF1dmuoaPeEVDvkDuO/9LVa44h5gqpWeJ4mRRznjDv7LA==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
-  '@next/swc-linux-x64-musl@15.4.8':
-    resolution: {integrity: sha512-s45V7nfb5g7dbS7JK6XZDcapicVrMMvX2uYgOHP16QuKH/JA285oy6HcxlKqwUNaFY/UC6EvQ8QZUOo19cBKSA==}
+  '@next/swc-linux-x64-musl@16.1.5':
+    resolution: {integrity: sha512-bQWSE729PbXT6mMklWLf8dotislPle2L70E9q6iwETYEOt092GDn0c+TTNj26AjmeceSsC4ndyGsK5nKqHYXjQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
-  '@next/swc-win32-arm64-msvc@15.4.8':
-    resolution: {integrity: sha512-KjgeQyOAq7t/HzAJcWPGA8X+4WY03uSCZ2Ekk98S9OgCFsb6lfBE3dbUzUuEQAN2THbwYgFfxX2yFTCMm8Kehw==}
+  '@next/swc-win32-arm64-msvc@16.1.5':
+    resolution: {integrity: sha512-LZli0anutkIllMtTAWZlDqdfvjWX/ch8AFK5WgkNTvaqwlouiD1oHM+WW8RXMiL0+vAkAJyAGEzPPjO+hnrSNQ==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
 
-  '@next/swc-win32-x64-msvc@15.4.8':
-    resolution: {integrity: sha512-Exsmf/+42fWVnLMaZHzshukTBxZrSwuuLKFvqhGHJ+mC1AokqieLY/XzAl3jc/CqhXLqLY3RRjkKJ9YnLPcRWg==}
+  '@next/swc-win32-x64-msvc@16.1.5':
+    resolution: {integrity: sha512-7is37HJTNQGhjPpQbkKjKEboHYQnCgpVt/4rBrrln0D9nderNxZ8ZWs8w1fAtzUx7wEyYjQ+/13myFgFj6K2Ng==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
@@ -1224,6 +1224,10 @@ packages:
   balanced-match@1.0.2:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
 
+  baseline-browser-mapping@2.9.19:
+    resolution: {integrity: sha512-ipDqC8FrAl/76p2SSWKSI+H9tFwm7vYqXQrItCuiVPt26Km0jS+NzSsBWAaBusvSbQcfJG+JitdMm+wZAgTYqg==}
+    hasBin: true
+
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
     engines: {node: '>=8'}
@@ -1247,8 +1251,8 @@ packages:
   caniuse-lite@1.0.30001718:
     resolution: {integrity: sha512-AflseV1ahcSunK53NfEs9gFWgOEmzr0f+kaMFA4xiLZlr9Hzt7HxcSpIFcnNCUkz6R6dWKa54rUz3HUmI3nVcw==}
 
-  caniuse-lite@1.0.30001760:
-    resolution: {integrity: sha512-7AAMPcueWELt1p3mi13HR/LHH0TJLT11cnwDJEs3xA4+CK/PLKeO9Kl1oru24htkyUKtkGCvAx4ohB0Ttry8Dw==}
+  caniuse-lite@1.0.30001766:
+    resolution: {integrity: sha512-4C0lfJ0/YPjJQHagaE9x2Elb69CIqEPZeG0anQt9SIvIoOH4a4uaRl73IavyO+0qZh6MDLH//DrXThEYKHkmYA==}
 
   cheap-ruler@4.0.0:
     resolution: {integrity: sha512-0BJa8f4t141BYKQyn9NSQt1PguFQXMXwZiA5shfoaBYHAb2fFk2RAX+tiWMoQU+Agtzt3mdt0JtuyshAXqZ+Vw==}
@@ -1422,8 +1426,8 @@ packages:
   fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
 
-  framer-motion@12.23.26:
-    resolution: {integrity: sha512-cPcIhgR42xBn1Uj+PzOyheMtZ73H927+uWPDVhUMqxy8UHt6Okavb6xIz9J/phFUHUj0OncR6UvMfJTXoc/LKA==}
+  framer-motion@12.29.2:
+    resolution: {integrity: sha512-lSNRzBJk4wuIy0emYQ/nfZ7eWhqud2umPKw2QAQki6uKhZPKm2hRQHeQoHTG9MIvfobb+A/LbEWPJU794ZUKrg==}
     peerDependencies:
       '@emotion/is-prop-valid': '*'
       react: ^18.0.0 || ^19.0.0
@@ -1545,11 +1549,11 @@ packages:
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
 
-  mapbox-gl@3.17.0:
-    resolution: {integrity: sha512-nCrDKRlr5di6xUksUDslNWwxroJ5yv1hT8pyVFtcpWJOOKsYQxF/wOFTMie8oxMnXeFkrz1Tl1TwA1XN1yX0KA==}
+  mapbox-gl@3.18.1:
+    resolution: {integrity: sha512-Izc8dee2zkmb6Pn9hXFbVioPRLXJz1OFUcrvri69MhFACPU4bhLyVmhEsD9AyW1qOAP0Yvhzm60v63xdMIHPPw==}
 
-  martinez-polygon-clipping@0.7.4:
-    resolution: {integrity: sha512-jBEwrKtA0jTagUZj2bnmb4Yg2s4KnJGRePStgI7bAVjtcipKiF39R4LZ2V/UT61jMYWrTcBhPazexeqd6JAVtw==}
+  martinez-polygon-clipping@0.8.1:
+    resolution: {integrity: sha512-9PLLMzMPI6ihHox4Ns6LpVBLpRc7sbhULybZ/wyaY8sY3ECNe2+hxm1hA2/9bEEpRrdpjoeduBuZLg2aq1cSIQ==}
 
   merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
@@ -1567,11 +1571,11 @@ packages:
     resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
     engines: {node: '>=16 || 14 >=14.17'}
 
-  motion-dom@12.23.23:
-    resolution: {integrity: sha512-n5yolOs0TQQBRUFImrRfs/+6X4p3Q4n1dUEqt/H58Vx7OW6RF+foWEgmTVDhIWJIMXOuNNL0apKH2S16en9eiA==}
+  motion-dom@12.29.2:
+    resolution: {integrity: sha512-/k+NuycVV8pykxyiTCoFzIVLA95Nb1BFIVvfSu9L50/6K6qNeAYtkxXILy/LRutt7AzaYDc2myj0wkCVVYAPPA==}
 
-  motion-utils@12.23.6:
-    resolution: {integrity: sha512-eAWoPgr4eFEOFfg2WjIsMoqJTW6Z8MTUCgn/GZ3VRpClWBdnbjryiA3ZSNLyxCTmCQx4RmYX6jX1iWHbenUPNQ==}
+  motion-utils@12.29.2:
+    resolution: {integrity: sha512-G3kc34H2cX2gI63RqU+cZq+zWRRPSsNIOjpdl9TN4AQwC4sgwYPl/Q/Obf/d53nOm569T0fYK+tcoSV50BWx8A==}
 
   murmurhash-js@1.0.0:
     resolution: {integrity: sha512-TvmkNhkv8yct0SVBSy+o8wYzXjE4Zz3PCesbfs8HiCXXdcTuocApFv11UWlNFWKYsP2okqrhb7JNlSm9InBhIw==}
@@ -1590,9 +1594,9 @@ packages:
       react: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
       react-dom: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
 
-  next@15.4.9:
-    resolution: {integrity: sha512-/NedNmbiH4Umt/7SohT9VKxEdBt02Lj33xHrukE7d8Li6juT+75sEq4a4U06jggrvdbklKgr78OZEyWZ8XRrtw==}
-    engines: {node: ^18.18.0 || ^19.8.0 || >= 20.0.0}
+  next@16.1.5:
+    resolution: {integrity: sha512-f+wE+NSbiQgh3DSAlTaw2FwY5yGdVViAtp8TotNQj4kk4Q8Bh1sC/aL9aH+Rg1YAVn18OYXsRDT7U/079jgP7w==}
+    engines: {node: '>=20.9.0'}
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
@@ -1934,9 +1938,6 @@ packages:
   tiny-invariant@1.3.3:
     resolution: {integrity: sha512-+FbBPE1o9QAYvviau/qC5SE3caw21q3xkvWKBtja5vgqOWIHHJ3ioaq1VPfn/Szqctz2bU/oYeKd9/z5BL+PVg==}
 
-  tinyqueue@1.2.3:
-    resolution: {integrity: sha512-Qz9RgWuO9l8lT+Y9xvbzhPT2efIUIFd69N7eF7tJ9lnQl0iLj1M7peK7IoUGZL9DJHw9XftqLreccfxcQgYLxA==}
-
   tinyqueue@3.0.0:
     resolution: {integrity: sha512-gRa9gwYU3ECmQYv3lslts5hxuIa90veaEcxDYuu3QGOIAEM2mOZkVHp48ANJuu1CURtRdHKUBY5Lm1tHV+sD4g==}
 
@@ -2028,7 +2029,7 @@ snapshots:
 
   '@babel/runtime@7.27.3': {}
 
-  '@emnapi/runtime@1.7.1':
+  '@emnapi/runtime@1.8.1':
     dependencies:
       tslib: 2.8.1
     optional: true
@@ -2145,7 +2146,7 @@ snapshots:
 
   '@img/sharp-wasm32@0.34.5':
     dependencies:
-      '@emnapi/runtime': 1.7.1
+      '@emnapi/runtime': 1.8.1
     optional: true
 
   '@img/sharp-win32-arm64@0.34.5':
@@ -2201,30 +2202,30 @@ snapshots:
 
   '@mapbox/whoots-js@3.1.0': {}
 
-  '@next/env@15.4.9': {}
+  '@next/env@16.1.5': {}
 
-  '@next/swc-darwin-arm64@15.4.8':
+  '@next/swc-darwin-arm64@16.1.5':
     optional: true
 
-  '@next/swc-darwin-x64@15.4.8':
+  '@next/swc-darwin-x64@16.1.5':
     optional: true
 
-  '@next/swc-linux-arm64-gnu@15.4.8':
+  '@next/swc-linux-arm64-gnu@16.1.5':
     optional: true
 
-  '@next/swc-linux-arm64-musl@15.4.8':
+  '@next/swc-linux-arm64-musl@16.1.5':
     optional: true
 
-  '@next/swc-linux-x64-gnu@15.4.8':
+  '@next/swc-linux-x64-gnu@16.1.5':
     optional: true
 
-  '@next/swc-linux-x64-musl@15.4.8':
+  '@next/swc-linux-x64-musl@16.1.5':
     optional: true
 
-  '@next/swc-win32-arm64-msvc@15.4.8':
+  '@next/swc-win32-arm64-msvc@16.1.5':
     optional: true
 
-  '@next/swc-win32-x64-msvc@15.4.8':
+  '@next/swc-win32-x64-msvc@16.1.5':
     optional: true
 
   '@nodelib/fs.scandir@2.1.5':
@@ -3023,6 +3024,8 @@ snapshots:
 
   balanced-match@1.0.2: {}
 
+  baseline-browser-mapping@2.9.19: {}
+
   binary-extensions@2.3.0: {}
 
   brace-expansion@2.0.1:
@@ -3044,7 +3047,7 @@ snapshots:
 
   caniuse-lite@1.0.30001718: {}
 
-  caniuse-lite@1.0.30001760: {}
+  caniuse-lite@1.0.30001766: {}
 
   cheap-ruler@4.0.0: {}
 
@@ -3207,10 +3210,10 @@ snapshots:
 
   fraction.js@4.3.7: {}
 
-  framer-motion@12.23.26(@emotion/is-prop-valid@1.4.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  framer-motion@12.29.2(@emotion/is-prop-valid@1.4.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
-      motion-dom: 12.23.23
-      motion-utils: 12.23.6
+      motion-dom: 12.29.2
+      motion-utils: 12.29.2
       tslib: 2.8.1
     optionalDependencies:
       '@emotion/is-prop-valid': 1.4.0
@@ -3306,7 +3309,7 @@ snapshots:
     dependencies:
       react: 19.1.0
 
-  mapbox-gl@3.17.0:
+  mapbox-gl@3.18.1:
     dependencies:
       '@mapbox/jsonlint-lines-primitives': 2.0.2
       '@mapbox/mapbox-gl-supported': 3.0.0
@@ -3327,7 +3330,7 @@ snapshots:
       gl-matrix: 3.4.4
       grid-index: 1.1.0
       kdbush: 4.0.2
-      martinez-polygon-clipping: 0.7.4
+      martinez-polygon-clipping: 0.8.1
       murmurhash-js: 1.0.0
       pbf: 4.0.1
       potpack: 2.0.0
@@ -3335,11 +3338,11 @@ snapshots:
       supercluster: 8.0.1
       tinyqueue: 3.0.0
 
-  martinez-polygon-clipping@0.7.4:
+  martinez-polygon-clipping@0.8.1:
     dependencies:
       robust-predicates: 2.0.4
       splaytree: 0.1.4
-      tinyqueue: 1.2.3
+      tinyqueue: 3.0.0
 
   merge2@1.4.1: {}
 
@@ -3354,11 +3357,11 @@ snapshots:
 
   minipass@7.1.2: {}
 
-  motion-dom@12.23.23:
+  motion-dom@12.29.2:
     dependencies:
-      motion-utils: 12.23.6
+      motion-utils: 12.29.2
 
-  motion-utils@12.23.6: {}
+  motion-utils@12.29.2: {}
 
   murmurhash-js@1.0.0: {}
 
@@ -3375,24 +3378,25 @@ snapshots:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
-  next@15.4.9(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  next@16.1.5(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
-      '@next/env': 15.4.9
+      '@next/env': 16.1.5
       '@swc/helpers': 0.5.15
-      caniuse-lite: 1.0.30001760
+      baseline-browser-mapping: 2.9.19
+      caniuse-lite: 1.0.30001766
       postcss: 8.4.31
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       styled-jsx: 5.1.6(react@19.1.0)
     optionalDependencies:
-      '@next/swc-darwin-arm64': 15.4.8
-      '@next/swc-darwin-x64': 15.4.8
-      '@next/swc-linux-arm64-gnu': 15.4.8
-      '@next/swc-linux-arm64-musl': 15.4.8
-      '@next/swc-linux-x64-gnu': 15.4.8
-      '@next/swc-linux-x64-musl': 15.4.8
-      '@next/swc-win32-arm64-msvc': 15.4.8
-      '@next/swc-win32-x64-msvc': 15.4.8
+      '@next/swc-darwin-arm64': 16.1.5
+      '@next/swc-darwin-x64': 16.1.5
+      '@next/swc-linux-arm64-gnu': 16.1.5
+      '@next/swc-linux-arm64-musl': 16.1.5
+      '@next/swc-linux-x64-gnu': 16.1.5
+      '@next/swc-linux-x64-musl': 16.1.5
+      '@next/swc-win32-arm64-msvc': 16.1.5
+      '@next/swc-win32-x64-msvc': 16.1.5
       sharp: 0.34.5
     transitivePeerDependencies:
       - '@babel/core'
@@ -3737,8 +3741,6 @@ snapshots:
       any-promise: 1.3.0
 
   tiny-invariant@1.3.3: {}
-
-  tinyqueue@1.2.3: {}
 
   tinyqueue@3.0.0: {}
 
